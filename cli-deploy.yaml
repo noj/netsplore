@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netsplore-reader
+  labels:
+    app: netsplore-reader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netsplore-reader
+  template:
+    metadata:
+      labels:
+        app: netsplore-reader
+    spec:
+      containers:
+      - name: netsplore
+        image: ghcr.io/noj/netsplore:2025.03.14-1531-6be57317
+        command: ["/bin/ipmcread"]
+        ports:
+        - containerPort: 4000
+
