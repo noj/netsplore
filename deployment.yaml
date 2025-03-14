@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: netsplore
-        image: ttl.sh/33d22a1d-7833-466a-9aeb-464e80cfc449:8h
+        image: ghcr.io/noj/netsplore:latest
+        command: ["/bin/ipmcsrv"]
         ports:
         - containerPort: 4000
 

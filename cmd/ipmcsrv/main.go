@@ -2,6 +2,7 @@ package main
 
 import (
 	"cmp"
+	"fmt"
 	"io"
 	"log"
 	"net"
@@ -114,6 +115,15 @@ func ipmcServer() {
 }
 
 func main() {
+	ifs, _ := net.Interfaces()
+	for idx, i := range ifs {
+		fmt.Println("if", idx, i)
+		mca, _ := i.MulticastAddrs()
+		for _, m := range mca {
+			fmt.Println("\t", m)
+		}
+	}
+
 	go tcpServer()
 	go udpUnicastServer()
 	ipmcServer()
