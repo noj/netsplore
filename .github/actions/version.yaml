@@ -1,0 +1,20 @@
+name: 'Version'
+description: 'Generated standard software version'
+inputs:
+  version-suffix:
+    description: 'Add optional suffix to version'
+    required: false
+    default: ''
+outputs:
+  version:
+    description: "Generated version"
+    value: ${{ steps.version.outputs.version }}
+runs:
+  using: "composite"
+  steps:
+    - id: version
+      shell: bash
+      run: |
+        VERSION="$(TZ=UTC0 git show --quiet --abbrev=8 --date='format-local:%Y.%m.%d-%H%M' --format="%cd-%h")${{ inputs.version-suffix }}"
+        echo $VERSION
+        echo "version=$(echo $VERSION)" >> $GITHUB_OUTPUT

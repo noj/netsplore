@@ -6,7 +6,19 @@ on:
     branches: [main]
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github
+      - uses: ./.github/actions/version
+        id: version
+
   container:
+    needs: [ version ]
     permissions:
       contents: read
       packages: write
@@ -19,4 +31,6 @@ jobs:
       image_name: noj/netsplore
       context: .
       dockerfile: ./Dockerfile
-      tags: latest
+      tags: |
+        ${{ needs.version.output.version }}
+        latest
