@@ -1,3 +1,3 @@
-module github.com/noj/net
+module github.com/noj/netsplore
 
 go 1.24.1

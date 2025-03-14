@@ -6,8 +6,9 @@ RUN go mod download
 COPY . /app
 
 ARG TARGETOS TARGETARCH
-RUN GOOS=$TARGETOS GOARCH=$TARGETARCH CGO_ENABLED=0 go build -trimpath -ldflags '-w -s' -o serve ./serve.go
+RUN GOOS=$TARGETOS GOARCH=$TARGETARCH CGO_ENABLED=0 go build -trimpath -ldflags '-w -s' -o ipmcserve ./cmd/ipmcsrv
+RUN GOOS=$TARGETOS GOARCH=$TARGETARCH CGO_ENABLED=0 go build -trimpath -ldflags '-w -s' -o ipmcread ./cmd/ipmcread
 
 FROM alpine:latest AS runtime
-COPY --from=build /app/serve /bin/serve
-ENTRYPOINT ["/bin/serve"]
+COPY --from=build /app/ipmcsrv /bin/ipmcsrv
+COPY --from=build /app/ipmcread /bin/ipmcread
