@@ -32,5 +32,5 @@ jobs:
       context: .
       dockerfile: ./Dockerfile
       tags: |
-        ${{ needs.version.output.version }}
+        ${{ needs.version.outputs.version }}
         latest
