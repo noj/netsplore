@@ -29,7 +29,7 @@ on:
       runs-on:
         required: false
         type: string
-        default: "ubuntu-22.04"
+        default: "ubuntu-latest"
 
       build-args:
         required: false
@@ -91,6 +91,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
+          build-args: ${{ inputs.build-args }}
           cache-to: type=gha,mode=max
 
       # Sign the resulting Docker image digest except on PRs.
