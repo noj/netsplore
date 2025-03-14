@@ -23,21 +23,15 @@ func main() {
 	for idx, i := range ifs {
 		fmt.Println("if", idx, i)
 		mca, _ := i.MulticastAddrs()
+		ifa, _ := i.Addrs()
+		for _, a := range ifa {
+			fmt.Println("\taddr:", a)
+		}
+
 		for _, m := range mca {
-			fmt.Println("\t", m)
+			fmt.Println("\tmc:", m)
 		}
 	}
-
-	ifa, _ := net.InterfaceAddrs()
-	for idx, a := range ifa {
-		fmt.Println("addr", idx, a)
-	}
-
-	// var iface *net.Interface
-	// if ifArg != nil {
-	// 	//iface = net.Interface
-	// 	iface = nil
-	// }
 
 	addr, err := net.ResolveUDPAddr("udp", *mcAddrArg)
 	check(err)

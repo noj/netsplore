@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: netsplore-reader
+  name: netsplore-client
   labels:
-    app: netsplore-reader
+    app: netsplore-client
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: netsplore-reader
+      app: netsplore-client
   template:
     metadata:
       labels:
-        app: netsplore-reader
+        app: netsplore-client
     spec:
       containers:
       - name: netsplore

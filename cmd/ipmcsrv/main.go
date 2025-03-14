@@ -119,8 +119,13 @@ func main() {
 	for idx, i := range ifs {
 		fmt.Println("if", idx, i)
 		mca, _ := i.MulticastAddrs()
+		ifa, _ := i.Addrs()
+		for _, a := range ifa {
+			fmt.Println("\taddr:", a)
+		}
+
 		for _, m := range mca {
-			fmt.Println("\t", m)
+			fmt.Println("\tmc:", m)
 		}
 	}
 

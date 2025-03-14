@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: netsplore
+  name: netsplore-serve
   labels:
-    app: netsplore
+    app: netsplore-serve
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: netsplore
+      app: netsplore-serve
   template:
     metadata:
       labels:
-        app: netsplore
+        app: netsplore-serve
     spec:
       containers:
       - name: netsplore
