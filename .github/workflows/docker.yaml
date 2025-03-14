@@ -107,3 +107,34 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Pick one tag preferably not "latest" if possible
+        id: parse_tags
+        run: |
+          # Remove 'latest' if other tags exist, then pick the first leftover.
+          ONE_TAG="$( echo "${{ inputs.tags }}" \
+            | sed 's/\blatest\b//g' \
+            | xargs \
+            | cut -d ' ' -f 1 )"
+
+          # If the resulting string is empty, it means 'latest' was the only tag, so revert to 'latest'
+          if [ -z "$ONE_TAG" ]; then
+            ONE_TAG="latest"
+          fi
+
+          echo "Selected tag: $ONE_TAG"
+          echo "one_tag=$ONE_TAG" >> "$GITHUB_OUTPUT"
+
+      # Scan the resulting Docker image for vulnerabilities
+      # See https://github.com/marketplace/actions/aqua-security-trivy
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # v0.29.0
+        with:
+          image-ref: ${{ inputs.registry }}/${{ inputs.image_name }}:${{ steps.parse_tags.outputs.one_tag }}
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          hide-progress: true
+          severity: 'HIGH,CRITICAL'
+        env:
+          TRIVY_DISABLE_VEX_NOTICE: true
