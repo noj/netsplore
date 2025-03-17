@@ -19,5 +19,9 @@ spec:
         image: ghcr.io/noj/netsplore:2025.03.14-1531-6be57317
         command: ["/bin/ipmcsrv"]
         ports:
-        - containerPort: 4000
+        - name: tcp
+          containerPort: 4000
+        - name: udp
+          containerPort: 4001
+          protocol: UDP
 

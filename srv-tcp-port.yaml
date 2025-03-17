@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: netsplore-tcp
+spec:
+  selector:
+    app: netsplore-serve
+  type: NodePort
+  ports:
+  - name: tcp
+    port: 4000
+    targetPort: 4000
+    protocol: TCP
