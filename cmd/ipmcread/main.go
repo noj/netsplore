@@ -15,9 +15,16 @@ func check(err error) {
 }
 
 func main() {
-	//ifArg := flag.String("interface", "", "interface to bind to")
+	ifArg := flag.String("interface", "", "interface to bind to")
 	mcAddrArg := flag.String("addr", "224.0.0.1:9999", "interface to bind to")
 	flag.Parse()
+
+	var iface *net.Interface
+	if *ifArg != "" {
+		var err error
+		iface, err = net.InterfaceByName(*ifArg)
+		check(err)
+	}
 
 	ifs, _ := net.Interfaces()
 	for idx, i := range ifs {
@@ -36,7 +43,7 @@ func main() {
 	addr, err := net.ResolveUDPAddr("udp", *mcAddrArg)
 	check(err)
 
-	l, err := net.ListenMulticastUDP("udp", nil, addr)
+	l, err := net.ListenMulticastUDP("udp", iface, addr)
 	packet := make([]byte, 1500)
 	l.SetReadBuffer(len(packet))
 
