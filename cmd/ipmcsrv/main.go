@@ -92,11 +92,18 @@ func ipmcServer() {
 	seqNo := 1
 
 	addrStr := cmp.Or(os.Getenv("MULTICAST_ADDR"), "224.0.0.1:9999")
+	localAddrStr := os.Getenv("LOCAL_ADDR")
 
 	addr, err := net.ResolveUDPAddr("udp", addrStr)
 	check(err)
 
-	c, err := net.DialUDP("udp", nil, addr)
+	var laddr *net.UDPAddr
+	if localAddrStr != "" {
+		laddr, err = net.ResolveUDPAddr("udp", localAddrStr)
+		check(err)
+	}
+
+	c, err := net.DialUDP("udp", laddr, addr)
 	check(err)
 
 	defer c.Close()

@@ -6,7 +6,6 @@ spec:
   selector:
     app: netsplore-serve
   type: NodePort
-  externalTrafficPolicy: Local
   ports:
   - name: udp
     port: 4001
