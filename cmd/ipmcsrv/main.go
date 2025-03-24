@@ -108,7 +108,11 @@ func ipmcServer() {
 
 	defer c.Close()
 
-	log.Printf("IPMC on %s", addr.String())
+	if laddr != nil {
+		log.Printf("IPMC on %s over %s", addr.String(), laddr.String())
+	} else {
+		log.Printf("IPMC on %s", addr.String())
+	}
 
 	for {
 		seqNoStr := strconv.Itoa(seqNo)
